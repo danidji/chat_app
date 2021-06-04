@@ -8,13 +8,28 @@ import Content from '../components/Content'
 import Layout from '../components/Layout'
 import Sidebar from '../components/Sidebar'
 
+import { fetchData } from '../services/request';
 
-export default function Chat() {
+
+
+
+export const getServerSideProps = async () => {
+    const data = await fetchData();
+    // console.log(`getServerSideProps -> data`, data)
+
+    return {
+        props: data
+    }
+}
+
+export default function Chat(props) {
+
+
     return (
         <div className={styles.container}>
 
 
-            <Layout content={<Content />} sidebar={<Sidebar />} />
+            <Layout content={<Content />} sidebar={<Sidebar room={props.rooms} />} />
 
 
         </div >
