@@ -1,18 +1,24 @@
 import React from 'react';
-import styles from '../styles/Home.module.css'
+import styles from '../styles/Layout.module.css'
+
+import ContentMessage from './ContentMessage'
 
 function Content(props) {
+
+    const handleChange = (e) => {
+
+        // console.log(`handleChange -> e`, e.target.value)
+    }
+
     return (
         <main className={styles.main}>
 
-            <h1 className={styles.title}>
-                Welcome to <a href="https://nextjs.org">Next.js!</a>
-            </h1>
+            <header className={styles.header}>
+                <h4>Ouvrir une conversation</h4>
+            </header>
+            <div className={styles.content_convers}> Ma conversation</div>
+            <ContentMessage handleChange={handleChange} />
 
-            <p className={styles.description}>
-                Get started by editing{' '}
-                <code className={styles.code}>pages/index.js</code>
-            </p>
         </main>
     )
 }

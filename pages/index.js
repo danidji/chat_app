@@ -6,7 +6,7 @@ import styles from '../styles/Home.module.css'
 
 import Content from '../components/Content'
 import Layout from '../components/Layout'
-import Footer from '../components/Footer'
+import Sidebar from '../components/Sidebar'
 
 
 export default function Home() {
@@ -18,7 +18,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Layout Content={<Content />} Footer={<Footer />} />
+      <Layout content={<Content />} sidebar={<Sidebar />} />
 
 
     </div >
