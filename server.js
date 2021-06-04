@@ -23,7 +23,13 @@ app.prepare().then(() => {
     io.on("connection", (socket) => {
         console.log('connecté ! ');
 
+        socket.on("rejoindre salon", (data) => {
+            console.log(data)
 
+            socket.join(data.myRoom.id)
+            console.log('Connecté au ', data.myRoom.name);
+
+        })
 
         socket.on("disconnect", () => {
             console.log('Utilisateur déconnecté!');
