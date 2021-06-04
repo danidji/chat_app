@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
-
+import { userContext } from '../contexts/userContext';
 
 
 export default function Register(props) {
@@ -11,10 +11,13 @@ export default function Register(props) {
     //redirection 
     const router = useRouter();
 
+    //chargement du contexte user
+    const context = useContext(userContext);
 
 
     const onSubmit = (data) => {
-        console.log(data);
+        // console.log(data);
+        context.setUser(data);
         router.push("/chat");
     }
 
