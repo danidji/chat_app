@@ -8,6 +8,8 @@ import Content from '../components/Content'
 import Layout from '../components/Layout'
 import Sidebar from '../components/Sidebar'
 
+import Register from '../components/Register';
+
 
 export default function Home() {
   return (
@@ -18,7 +20,8 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Layout content={<Content />} sidebar={<Sidebar />} />
+      <h1>Test</h1>
+      <Register />
 
 
     </div >
