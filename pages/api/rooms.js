@@ -8,6 +8,5 @@ const rooms = [
 ];
 
 export default async function handler(req, res) {
-    console.log(`handler -> req`, req)
     res.send(rooms);
 }
