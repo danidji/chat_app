@@ -5,14 +5,14 @@ import { useState } from 'react';
 function MyApp({ Component, pageProps }) {
   const [state, setState] = useState({
     user: {},
-    myRoom: [],
+    myRoom: {},
 
 
     setUser: (dataUser) => {
-      setState({ ...state, user: dataUser })
+      setState((state) => ({ ...state, user: dataUser }));
     },
     setMyRoom: (roomData) => {
-      setState({ ...state, myRoom: roomData })
+      setState((state) => ({ ...state, myRoom: roomData }));
     }
   })
 
