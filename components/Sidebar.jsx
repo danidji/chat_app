@@ -22,7 +22,7 @@ function Sidebar(props) {
     }, [])
 
 
-    console.log(state)
+    console.log(context)
 
     const handleClik = (room) => {
         // ===> au click
@@ -39,7 +39,6 @@ function Sidebar(props) {
     }
 
 
-    console.log('context.myRoom ===>', context.myRoom)
     const getRoomElement = () => {
         return (
             state.roomData.map((room, i) => {
