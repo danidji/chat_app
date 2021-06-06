@@ -14,6 +14,8 @@ const io = socketIO(server, {
     }
 })
 
+const dataTab = [];
+
 app.prepare().then(() => {
     server.listen(6061, (err) => {
         if (err) throw err;
@@ -24,10 +26,24 @@ app.prepare().then(() => {
         console.log('connecté ! ');
 
         socket.on("rejoindre salon", (data) => {
-            console.log(data)
 
+
+            console.log(data)
+            //connection à la room
             socket.join(data.myRoom.id)
+            if (!dataTab.includes(data.myRoom.id)) {
+                dataTab.push(data.myRoom)
+            }
             console.log('Connecté au ', data.myRoom.name);
+            // Ecoute de l'event "envoi message" => transmettre le message à la room
+
+        })
+
+        socket.on("envoi message", (message, user, myRoom) => {
+            // console.log(`socket.on -> myRoom`, myRoom)
+            // console.log(`socket.on -> user`, user)
+            // console.log(`socket.on -> message`, message)
+            io.to(myRoom.id).emit("reception message", message)
 
         })
 
