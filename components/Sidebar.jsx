@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
-import styles from '../styles/Layout.module.css'
+import styles from '../styles/Sidebar.module.css'
 import Image from 'next/image'
 
 import { userContext } from '../contexts/userContext';
@@ -43,23 +43,24 @@ function Sidebar(props) {
         return (
             state.roomData.map((room, i) => {
                 return (
-                    <div className="room_element" key={i} onClick={() => handleClik(room)}>
+                    <div className={styles.room_element} key={i} onClick={() => handleClik(room)}>
 
-                        <p>{room.name}</p>
-                        <p>{room.description}</p>
+                        <p className={styles.info}>{room.name}</p>
+                        <p className={styles.info}>{room.description}</p>
 
                     </div>
                 )
             })
+
         )
     }
     return (
-        <>
-            <div className={styles.title}>
-                <h4>Mes conversations</h4>
+        <div className={styles.sidebar}>
+            <h4 className={styles.title}>Mes conversations</h4>
+            <div className={styles.room_list}>
                 {getRoomElement()}
             </div>
-        </>
+        </div>
     )
 }
 

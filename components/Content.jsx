@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import styles from '../styles/Layout.module.css'
+import styles from '../styles/Conversation.module.css'
 
 import ContentMessage from './ContentMessage'
 import { userContext } from '../contexts/userContext';

@@ -1,5 +1,6 @@
 import React from 'react';
-import styles from '../styles/Layout.module.css'
+import styles from '../styles/Conversation.module.css'
+import { BiSend } from "react-icons/bi";
 
 function ContentMessage(props) {
     return (
@@ -7,13 +8,15 @@ function ContentMessage(props) {
             <input
                 type="text"
                 name="text_message"
+                placeholder="Tapez un message"
                 className={styles.text_message}
                 onChange={props.handleChange}
                 value={props.value}
             />
 
-            <button className="send_message" onClick={props.onClick}> Envoyer </button>
+            <button className={styles.send_message} onClick={props.onClick}><BiSend /></button>
         </div>
+
 
 
     )

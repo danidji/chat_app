@@ -2,61 +2,12 @@
     /* background-color: red; */
     display: grid;
     grid-template-columns: 1fr 2fr;
-    grid-template-rows: 100vh;
+    grid-template-rows: 1fr;
+    height: 90vh;
+    background-color: #F1FFFA;
+    font-family: 'Synonym', sans-serif;
+    border-radius: 2rem;
+    box-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
 }
 
 
-.sidebar {
-    /* background-color: blue; */
-    text-align: center;
-    border-right: 0.05rem solid #4C5454;
-}
-
-.content {
-    /* background-color: blue; */
-    text-align: center;
-}
-
-.title {
-    border-bottom: .01rem solid #4C5454;
-    padding: 0;
-    margin: 0;
-    height: 2rem;
-}
-.title h4 {
-    padding: 0;
-    margin: 0;
-}
-
-.main {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-}
-
-.header {
-    height: 2rem;
-    border-bottom: .01rem solid #4C5454;
-}
-
-.header h4 {
-    margin: 0;
-    padding: 0;
-}
-.content_convers{
-    flex:1;
-}
-
-.content_message {
-    height: 5rem;
-    border-top: .01rem solid #4C5454;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.content_message .text_message {
-    border: 0.01rem solid #a2b2b2;
-    height: 2rem;
-    width: 40rem;
-}

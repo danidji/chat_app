@@ -4,6 +4,9 @@ import { useRouter } from "next/router";
 import { userContext } from '../contexts/userContext';
 
 
+import styles from '../styles/Register.module.css'
+
+
 export default function Register(props) {
     //gestion formulaire
     const { register, handleSubmit } = useForm();
@@ -23,30 +26,33 @@ export default function Register(props) {
 
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <div className={styles.content_register}>
 
-            <input
-                placeholder="Taper votre pseudo"
-                {...register("pseudo")}
-            />
-            <input
-                placeholder="Quel age avez vous ?"
-                type="number"
-                {...register("age")}
-            />
-            <input
-                placeholder="Saisir une courte description"
-                {...register("description")}
-            />
-            <label htmlFor="gender">Sexe</label>
-            <select value="default" {...register("gender")}>
-                <option value="default" disabled ></option>
-                <option value="female">Femme</option>
-                <option value="male">Homme</option>
-                <option value="other">Autre</option>
-            </select>
-            <input type="submit" />
+            <h1 className={styles.title1}>Bienvenue !</h1>
+            <h3 className={styles.title3}>Enregistrez vous pour accéder au tchat :</h3>
+            <form className={styles.form_register} onSubmit={handleSubmit(onSubmit)}>
 
-        </form>
+                <input
+                    className={styles.register}
+                    placeholder="Taper votre pseudo"
+                    required
+                    {...register("pseudo")}
+                />
+                <input
+                    className={styles.register}
+                    placeholder="Quel age avez vous ?"
+                    type="number"
+                    {...register("age")}
+                />
+                <input
+                    className={styles.register}
+                    placeholder="Saisir une courte description"
+                    {...register("description")}
+                />
+
+                <input className={styles.submit} value="Se connecter" type="submit" />
+
+            </form>
+        </div>
     )
 }
