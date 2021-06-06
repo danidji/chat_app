@@ -28,24 +28,39 @@ app.prepare().then(() => {
         socket.on("rejoindre salon", (data) => {
 
 
-            console.log(data)
+            // console.log(data)
             //connection à la room
             socket.join(data.myRoom.id)
+
+
+            /**
+             * TODO
+             * - gerer le remplissage de datatab
+             * - envoyer le message qu'à la room concernée
+             * */
+
+
             if (!dataTab.includes(data.myRoom.id)) {
                 dataTab.push(data.myRoom)
+                console.log(`socket.on -> dataTab`, dataTab)
+
             }
             console.log('Connecté au ', data.myRoom.name);
-            // Ecoute de l'event "envoi message" => transmettre le message à la room
 
         })
 
+
+        // Ecoute de l'event "envoi message" => transmettre le message à la room
         socket.on("envoi message", (message, user, myRoom) => {
-            // console.log(`socket.on -> myRoom`, myRoom)
-            // console.log(`socket.on -> user`, user)
-            // console.log(`socket.on -> message`, message)
-            io.to(myRoom.id).emit("reception message", message)
+            // io.to(myRoom.id).emit("reception message", message)
+            socket.broadcast.emit("reception message", {
+                message: message,
+                from: user.pseudo
+            })
 
         })
+
+
 
         socket.on("disconnect", () => {
             console.log('Utilisateur déconnecté!');

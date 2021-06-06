@@ -26,7 +26,7 @@ function Content(props) {
     const handleClick = () => {
         // au click j'envois un évènement message au serveur socket 
         socket.emit("envoi message", state.message, context.user, context.myRoom)
-        console.log(`handleClick -> context.user`, context.user)
+        // console.log(`handleClick -> context.user`, context.user)
         setState({ ...state, message: "" })
 
     }
