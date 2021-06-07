@@ -29,7 +29,8 @@ function Content(props) {
         // au click j'envoie un évènement message au serveur socket 
         let newMsg = {
             id_msg: `${Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1)}_${Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1)}`,
-            content_msg: state.message
+            content_msg: state.message,
+            // roomId: context.myRoom.id
         }
 
         socket.emit("envoi message", newMsg, context.user, context.myRoom)
@@ -53,14 +54,15 @@ function Content(props) {
         })
         if (!present) {
             tab.push(message);
+            setState({ ...state, msgList: tab });
+            context.setConversation(context.myRoom.id, message)
 
         }
-        // console.log(`socket.on -> tab`, tab)
-        setState({ ...state, msgList: tab })
-        // console.log('conversation ====> ', socket);
-        // console.log(state.msgList)
+
+
     })
 
+    console.log('conversation ===>', context.conversation)
     const displayMessages = () => {
         return (
             state.msgList.map((element, i) => {
@@ -75,7 +77,7 @@ function Content(props) {
             })
         )
     }
-    // console.log(`socket.on -> tab`, state.msgList)
+    console.log(`socket.on -> tab`, state.msgList)
     return (
         <main className={styles.main}>
 

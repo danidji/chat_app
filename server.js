@@ -1,3 +1,4 @@
+const { Socket } = require('dgram');
 const { createServer } = require('http');
 const next = require('next');
 const dev = process.env.NODE_ENV !== "production";
@@ -28,30 +29,22 @@ app.prepare().then(() => {
         socket.on("rejoindre salon", (data) => {
 
 
-            console.log(data)
             //connection à la room
             socket.join(data.myRoom.id)
 
-            // io.sockets.clients(data.myRoom.id);
 
-            /**
-             * TODO
-             * - gerer le remplissage de datatab
-             * - envoyer le message qu'à la room concernée
-             * */
             // enregistrement de la room dans dataTab, si la room n'est pas déjà présente dans le tab
             let present = false;
             dataTab.forEach(element => {
                 if (element.id === data.myRoom.id) {
                     present = true;
-
                 }
             })
             if (!present) {
                 dataTab.push(data.myRoom)
             }
-            console.log(`socket.on -> dataTab`, dataTab)
 
+            socket.broadcast.emit("salon rejoint",)
 
 
 
@@ -79,7 +72,7 @@ app.prepare().then(() => {
                     }
 
                 }
-                console.log('messages ===> ', element.messages);
+                // console.log('messages ===> ', element.messages);
             })
 
 
@@ -87,10 +80,8 @@ app.prepare().then(() => {
                 message: message,
                 from_id: user.id,
                 from_name: user.pseudo,
-                room: myRoom.id
             })
             // socket.broadcast.emit("reception message", {
-            // console.log("Test ==>", dataTab.messages)
         })
 
 

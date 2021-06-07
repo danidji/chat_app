@@ -2,7 +2,9 @@ import React, { createContext } from 'react';
 
 export const userContext = createContext({
     user: {},
-    myRoom: [],
+    myRoom: {},
+    conversation: [],
     setUser: (dataUser) => { },
-    setMyRoom: (roomData) => { }
+    setMyRoom: (roomData) => { },
+    setConversation: (roomID, messageList) => { }
 })

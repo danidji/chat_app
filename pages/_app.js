@@ -8,7 +8,6 @@ function MyApp({ Component, pageProps }) {
     myRoom: {},
     conversation: [],
 
-
     setUser: (dataUser) => {
       setState((state) => ({
         ...state, user: {
@@ -24,6 +23,12 @@ function MyApp({ Component, pageProps }) {
         ...state, myRoom: roomData
       }));
     },
+    setConversation: (roomID, messageList) => {
+      let tab = state.conversation;
+      tab.push({ roomID: roomID, messageList: messageList });
+
+      setState({ ...state, conversation: tab })
+    }
 
   })
 
