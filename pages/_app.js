@@ -6,14 +6,25 @@ function MyApp({ Component, pageProps }) {
   const [state, setState] = useState({
     user: {},
     myRoom: {},
+    conversation: [],
 
 
     setUser: (dataUser) => {
-      setState((state) => ({ ...state, user: dataUser }));
+      setState((state) => ({
+        ...state, user: {
+          id: `${dataUser.pseudo}_${Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1)}`,
+          pseudo: dataUser.pseudo,
+          age: dataUser.age,
+          description: dataUser.description
+        }
+      }));
     },
     setMyRoom: (roomData) => {
-      setState((state) => ({ ...state, myRoom: roomData }));
-    }
+      setState((state) => ({
+        ...state, myRoom: roomData
+      }));
+    },
+
   })
 
   return (

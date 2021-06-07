@@ -28,36 +28,69 @@ app.prepare().then(() => {
         socket.on("rejoindre salon", (data) => {
 
 
-            // console.log(data)
+            console.log(data)
             //connection à la room
             socket.join(data.myRoom.id)
 
+            // io.sockets.clients(data.myRoom.id);
 
             /**
              * TODO
              * - gerer le remplissage de datatab
              * - envoyer le message qu'à la room concernée
              * */
+            // enregistrement de la room dans dataTab, si la room n'est pas déjà présente dans le tab
+            let present = false;
+            dataTab.forEach(element => {
+                if (element.id === data.myRoom.id) {
+                    present = true;
 
-
-            if (!dataTab.includes(data.myRoom.id)) {
+                }
+            })
+            if (!present) {
                 dataTab.push(data.myRoom)
-                console.log(`socket.on -> dataTab`, dataTab)
-
             }
-            console.log('Connecté au ', data.myRoom.name);
+            console.log(`socket.on -> dataTab`, dataTab)
+
+
+
 
         })
 
 
         // Ecoute de l'event "envoi message" => transmettre le message à la room
         socket.on("envoi message", (message, user, myRoom) => {
-            // io.to(myRoom.id).emit("reception message", message)
-            socket.broadcast.emit("reception message", {
-                message: message,
-                from: user.pseudo
+            // je stocke le message dans dataTab
+            dataTab.forEach(element => {
+                if (element.id === myRoom.id) {
+                    //si j'ai déja enregistré des messages je push à la suite
+                    if (element.messages) {
+                        element.messages.push({
+                            message: message,
+                            from_id: user.id,
+                        })
+
+
+                    } else { // sinon je créé un nouveau tableau
+                        element.messages = new Array({
+                            message: message,
+                            from_id: user.id,
+                        })
+                    }
+
+                }
+                console.log('messages ===> ', element.messages);
             })
 
+
+            io.to(myRoom.id).emit("reception message", {
+                message: message,
+                from_id: user.id,
+                from_name: user.pseudo,
+                room: myRoom.id
+            })
+            // socket.broadcast.emit("reception message", {
+            // console.log("Test ==>", dataTab.messages)
         })
 
 

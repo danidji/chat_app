@@ -22,7 +22,7 @@ function Sidebar(props) {
     }, [])
 
 
-    console.log(context)
+    // console.log(context)
 
     const handleClik = (room) => {
         // ===> au click
@@ -34,6 +34,7 @@ function Sidebar(props) {
             user: context.user,
             myRoom: room
         })
+        // console.log(`handleClik -> socket`, socket)
 
 
     }

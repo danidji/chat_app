@@ -7,15 +7,17 @@ import { SocketContext } from '../contexts/socketContext';
 
 function Content(props) {
 
-    //chargement du contexte user
+    //chargement du contexte usercd 
     const context = useContext(userContext);
     const socket = useContext(SocketContext)
     // console.log(`Content -> context`, context.myRoom)
 
     const [state, setState] = useState({
-        message: ""
+        message: "",
+        msgList: []
     })
 
+    let tab = [];
 
     const handleChange = (e) => {
 
@@ -24,8 +26,13 @@ function Content(props) {
     }
 
     const handleClick = () => {
-        // au click j'envois un évènement message au serveur socket 
-        socket.emit("envoi message", state.message, context.user, context.myRoom)
+        // au click j'envoie un évènement message au serveur socket 
+        let newMsg = {
+            id_msg: `${Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1)}_${Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1)}`,
+            content_msg: state.message
+        }
+
+        socket.emit("envoi message", newMsg, context.user, context.myRoom)
         // console.log(`handleClick -> context.user`, context.user)
         setState({ ...state, message: "" })
 
@@ -33,11 +40,42 @@ function Content(props) {
 
     //ecoute de serveur web socket
     socket.on("reception message", (message) => {
-        console.log(`socket.on -> message`, message)
+        // console.log(`socket.on -> message`, message)
 
+        let present = false
+        tab = state.msgList;
+        // console.log(`socket.on -> tab`, tab)
+        tab.forEach(element => {
+            if (element.message.id_msg === message.message.id_msg) {
+                // console.log(`message ====>`, message.message.content_msg)
+                present = true;
+            }
+        })
+        if (!present) {
+            tab.push(message);
+
+        }
+        // console.log(`socket.on -> tab`, tab)
+        setState({ ...state, msgList: tab })
+        // console.log('conversation ====> ', socket);
+        // console.log(state.msgList)
     })
 
+    const displayMessages = () => {
+        return (
+            state.msgList.map((element, i) => {
 
+                return (
+                    <div key={i}>
+
+                        <div className="test"> {element.from_id}</div>
+                        <div className="test" key={i}>{element.message.content_msg} </div>
+                    </div>
+                )
+            })
+        )
+    }
+    // console.log(`socket.on -> tab`, state.msgList)
     return (
         <main className={styles.main}>
 
@@ -45,7 +83,7 @@ function Content(props) {
                 <h4>{context.myRoom.name}</h4>
             </header>
             <div className={styles.content_convers}> Ma conversation</div>
-
+            {displayMessages()}
             {context.myRoom.name &&
 
                 <ContentMessage handleChange={handleChange} onClick={handleClick} value={state.message} />
