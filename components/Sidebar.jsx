@@ -8,7 +8,9 @@ import { SocketContext } from "../contexts/socketContext";
 import { GrPowerForceShutdown } from "react-icons/gr";
 import { AiOutlinePoweroff } from "react-icons/ai";
 
-import clsx from 'clsx';
+// import clsx from 'clsx';
+
+import ReactTooltip from 'react-tooltip';
 
 
 
@@ -25,21 +27,21 @@ function Sidebar(props) {
 
     useEffect(() => {
 
-        setState({ ...state, roomData: props.room })
+        setState({ ...state, roomData: props.room });
     }, [])
 
     /**
      * ECOUTE DES SOCKETS EVENT
      */
     socket.off("salon rejoint").on("salon rejoint", (roomId) => {
-        console.log(`socket.off -> roomId`, roomId)
+        // console.log(`socket.off -> roomId`, roomId)
         if (!socket.rooms) {
             socket.rooms = [];
         }
         if (!socket.rooms.includes(roomId)) {
             socket.rooms.push(roomId.roomId);
         }
-        setState({ ...state, actualRoom: roomId.roomId });
+
         setState({ ...state, myRooms: socket.rooms });
 
 
@@ -49,8 +51,6 @@ function Sidebar(props) {
     socket.off("salon quitté").on("salon quitté", (roomId) => {
 
         if (socket.rooms && socket.rooms.includes(roomId)) {
-            let test = socket.rooms.filter(element => element !== roomId)
-            console.log(`socket.off -> test`, test)
             socket.rooms = socket.rooms.filter(element => element !== roomId)
             setState({ ...state, myRooms: socket.rooms })
 
@@ -80,6 +80,7 @@ function Sidebar(props) {
         }
         socket.emit('rejoindre salon', data)
         // console.log(`handleClik -> socket`, socket)
+        setState({ ...state, actualRoom: room.id });
 
 
     }
@@ -93,6 +94,10 @@ function Sidebar(props) {
             user: context.user
         }
 
+        if (state.actualRoom === roomId) {
+            setState({ ...state, actualRoom: "" })
+        }
+
         socket.emit("quitter salon", data)
     }
 
@@ -101,12 +106,17 @@ function Sidebar(props) {
         return (
             state.roomData.map((room, i) => {
                 return (
-                    <li className={`${styles.room_element} ${state.actualRoom.roomId === room.id && styles.active}`} key={i} onClick={() => handleClik(room)}>
+                    <li className={`${styles.room_element} ${state.actualRoom === room.id && styles.active}`} key={i} onClick={() => handleClik(room)}>
                         <div className={styles.infos_room}>
                             <h5 className={styles.info}>{room.name}</h5>
                             <p className={`${styles.info} ${styles.para}`}>{room.description}</p>
                         </div>
-                        <button className={`${styles.leave_room} ${state.myRooms.includes(room.id) && styles.room_on}`} onClick={(e) => handleLeaveRoom(e, room.id)}><AiOutlinePoweroff /></button>
+                        <button
+                            data-tip={state.myRooms.includes(room.id) ? "Quitter salon" : ""}
+                            className={`${styles.leave_room} ${state.myRooms.includes(room.id) && styles.room_on}`}
+                            onClick={(e) => handleLeaveRoom(e, room.id)}
+                        ><ReactTooltip /><AiOutlinePoweroff />
+                        </button>
                     </li >
                 )
             })

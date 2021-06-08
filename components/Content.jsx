@@ -10,7 +10,7 @@ function Content(props) {
     //chargement du contexte usercd 
     const context = useContext(userContext);
     const socket = useContext(SocketContext)
-    console.log(`Content -> socket=====>`, socket)
+    // console.log(`Content -> socket=====>`, socket)
     // console.log(`Content -> context`, context.myRoom)
 
     const [state, setState] = useState({
@@ -39,11 +39,6 @@ function Content(props) {
         setState({ ...state, message: "" })
 
     }
-
-
-
-
-
 
 
 
@@ -95,7 +90,7 @@ function Content(props) {
             </header>
             <div className={styles.content_convers}> Ma conversation</div>
             {displayMessages()}
-            {context.myRoom.name &&
+            {socket.room &&
 
                 <ContentMessage handleChange={handleChange} onClick={handleClick} value={state.message} />
             }
