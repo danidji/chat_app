@@ -16,6 +16,17 @@ const io = socketIO(server, {
 })
 
 const dataTab = [];
+/**
+ * dataTab = {
+ *      salonId
+ *       content : {
+ *          nom, 
+ *          description,
+ *          message : [ ]
+ *      }
+ *  }
+ * 
+ */
 
 app.prepare().then(() => {
     server.listen(6061, (err) => {
@@ -28,25 +39,46 @@ app.prepare().then(() => {
 
         socket.on("rejoindre salon", (data) => {
 
+            /**    structure donnée ---^
+             * data {
+             *  user : {id, pseudo, age, description},
+             *  room : { id , name, description}
+             * }
+             */
 
             //connection à la room
-            socket.join(data.myRoom.id)
+            if (!socket.infoUser) {
+                socket.infoUser = data.user
+            }
+            socket.join(data.room.id)
 
+            socket.emit("salon rejoint", { roomId: data.room.id });
 
             // enregistrement de la room dans dataTab, si la room n'est pas déjà présente dans le tab
-            let present = false;
-            dataTab.forEach(element => {
-                if (element.id === data.myRoom.id) {
-                    present = true;
-                }
-            })
-            if (!present) {
-                dataTab.push(data.myRoom)
-            }
+            // let present = false;
+            // dataTab.forEach(element => {
+            //     if (element.id === data.myRoom.id) {
+            //         present = true;
+            //     }
+            // })
+            // if (!present) {
+            //     dataTab.push(data.myRoom)
+            // }
+        })
 
-            socket.broadcast.emit("salon rejoint",)
 
 
+
+        socket.on("quitter salon", (data) => {
+            console.log(`socket.on -> data`, data)
+            // data : {roomID, user :{id, pseudo, age, description}}
+            socket.leave(data.roomId);
+            console.log(`socket.on -> data.roomId`, data.roomId)
+
+            //emission de l'event à l'utilisateur
+            socket.emit("salon quitté", data.roomId);
+            //emission de l'event à tous les autres utilisateurs
+            socket.broadcast.to(data.roomId).emit("quitte la conversation", data.user);
 
         })
 

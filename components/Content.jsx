@@ -10,6 +10,7 @@ function Content(props) {
     //chargement du contexte usercd 
     const context = useContext(userContext);
     const socket = useContext(SocketContext)
+    console.log(`Content -> socket=====>`, socket)
     // console.log(`Content -> context`, context.myRoom)
 
     const [state, setState] = useState({
@@ -39,8 +40,16 @@ function Content(props) {
 
     }
 
+
+
+
+
+
+
+
+
     //ecoute de serveur web socket
-    socket.on("reception message", (message) => {
+    socket.off("reception message").on("reception message", (message) => {
         // console.log(`socket.on -> message`, message)
 
         let present = false
@@ -62,7 +71,7 @@ function Content(props) {
 
     })
 
-    console.log('conversation ===>', context.conversation)
+    // console.log('conversation ===>', context.conversation)
     const displayMessages = () => {
         return (
             state.msgList.map((element, i) => {
@@ -77,7 +86,7 @@ function Content(props) {
             })
         )
     }
-    console.log(`socket.on -> tab`, state.msgList)
+    // console.log(`socket.on -> tab`, state.msgList)
     return (
         <main className={styles.main}>
 

@@ -5,12 +5,19 @@ import Image from 'next/image'
 import { userContext } from '../contexts/userContext';
 import { SocketContext } from "../contexts/socketContext";
 
+import { GrPowerForceShutdown } from "react-icons/gr";
+import { AiOutlinePoweroff } from "react-icons/ai";
+
+import clsx from 'clsx';
+
 
 
 function Sidebar(props) {
     // console.log(`Sidebar -> props`, props)
     const [state, setState] = useState({
-        roomData: []
+        roomData: [],
+        actualRoom: "",
+        myRooms: []
     })
 
     const context = useContext(userContext);
@@ -21,35 +28,86 @@ function Sidebar(props) {
         setState({ ...state, roomData: props.room })
     }, [])
 
+    /**
+     * ECOUTE DES SOCKETS EVENT
+     */
+    socket.off("salon rejoint").on("salon rejoint", (roomId) => {
+        console.log(`socket.off -> roomId`, roomId)
+        if (!socket.rooms) {
+            socket.rooms = [];
+        }
+        if (!socket.rooms.includes(roomId)) {
+            socket.rooms.push(roomId.roomId);
+        }
+        setState({ ...state, actualRoom: roomId.roomId });
+        setState({ ...state, myRooms: socket.rooms });
 
-    // console.log(context)
+
+        console.log('STATE ===> ', state);
+    })
+
+    socket.off("salon quitté").on("salon quitté", (roomId) => {
+
+        if (socket.rooms && socket.rooms.includes(roomId)) {
+            let test = socket.rooms.filter(element => element !== roomId)
+            console.log(`socket.off -> test`, test)
+            socket.rooms = socket.rooms.filter(element => element !== roomId)
+            setState({ ...state, myRooms: socket.rooms })
+
+        }
+    })
+
+
+    /**
+     * FONCTIONS 
+     */
 
     const handleClik = (room) => {
         // ===> au click
         //j'envoi ma room dans mon context pour que les infos soit récupérer dans mon composant content msg
+        // structure room : { id , name, description}
         context.setMyRoom(room);
 
+        // Stockage des données dans le socket
+        socket.room = room
+        // console.log(`handleClik -> socket`, socket)
+
         // je réalise une connection au serveur web socket
-        socket.emit('rejoindre salon', {
-            user: context.user,
-            myRoom: room
-        })
+
+        let data = {
+            user: context.user //{id, pseudo, age, description}
+            , room: room
+        }
+        socket.emit('rejoindre salon', data)
         // console.log(`handleClik -> socket`, socket)
 
 
     }
 
+    const handleLeaveRoom = (e, roomId) => {
+        console.log(`handleLeaveRoom -> roomId`, roomId)
+        e.stopPropagation();
 
+        let data = {
+            roomId: roomId,
+            user: context.user
+        }
+
+        socket.emit("quitter salon", data)
+    }
+
+    console.log(state.actualRoom)
     const getRoomElement = () => {
         return (
             state.roomData.map((room, i) => {
                 return (
-                    <div className={styles.room_element} key={i} onClick={() => handleClik(room)}>
-
-                        <p className={styles.info}>{room.name}</p>
-                        <p className={styles.info}>{room.description}</p>
-
-                    </div>
+                    <li className={`${styles.room_element} ${state.actualRoom.roomId === room.id && styles.active}`} key={i} onClick={() => handleClik(room)}>
+                        <div className={styles.infos_room}>
+                            <h5 className={styles.info}>{room.name}</h5>
+                            <p className={`${styles.info} ${styles.para}`}>{room.description}</p>
+                        </div>
+                        <button className={`${styles.leave_room} ${state.myRooms.includes(room.id) && styles.room_on}`} onClick={(e) => handleLeaveRoom(e, room.id)}><AiOutlinePoweroff /></button>
+                    </li >
                 )
             })
 
@@ -58,9 +116,9 @@ function Sidebar(props) {
     return (
         <div className={styles.sidebar}>
             <h4 className={styles.title}>Mes conversations</h4>
-            <div className={styles.room_list}>
+            <ul className={styles.room_list}>
                 {getRoomElement()}
-            </div>
+            </ul>
         </div>
     )
 }
