@@ -68,6 +68,7 @@ function Sidebar(props) {
         // structure room : { id , name, description}
         context.setMyRoom(room);
 
+        // if (socket.rooms) {
 
         // Stockage des données dans le socket
         socket.room = room
@@ -79,6 +80,8 @@ function Sidebar(props) {
         socket.emit('rejoindre salon', data)
         // console.log(`handleClik -> socket`, socket)
         setState({ ...state, actualRoom: room.id });
+
+        // }
 
 
 

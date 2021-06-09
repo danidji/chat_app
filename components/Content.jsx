@@ -28,32 +28,26 @@ function Content(props) {
 
     let tab = [];
 
-    const handleChange = (e) => {
-
-        // console.log(`handleChange -> e`, e.target.value)
-        setState({ ...state, message: e.target.value })
-    }
-
-    const handleClick = () => {
-        // au click j'envoie un évènement message au serveur socket 
-        let newMsg = {
-            id_msg: `${Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1)}_${Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1)}`,
-            content_msg: state.message,
-            // roomId: context.myRoom.id
-        }
-
-        socket.emit("envoi message", newMsg, context.user, context.myRoom)
-        // console.log(`handleClick -> context.user`, context.user)
-        setState({ ...state, message: "" })
-
-    }
-
-
-
 
     /*************************************************************
      * ECOUTE DES SOCKETS EVENT
      */
+    socket.off('A rejoint le salon').on('A rejoint le salon', (data) => {
+        // data : {newUser, users:[]}
+
+        // let newUser = data.newUser;
+        setState({ ...state, newUser: data.newUser })
+        // let allUser = data.users;
+        setState({ ...state, users: data.users })
+        // console.log(`socket.off -> allUser`, allUser)
+        if (context.user.id !== data.newUser.id) {
+
+            notify(data.newUser.pseudo);
+        }
+
+
+    })
+
     socket.off("reception message").on("reception message", (message) => {
         // console.log(`socket.on -> message`, message)
 
@@ -73,23 +67,33 @@ function Content(props) {
 
         }
     })
-    socket.off('A rejoint le salon').on('A rejoint le salon', (data) => {
-        // data : {newUser, users:[]}
 
-        // let newUser = data.newUser;
-        setState({ ...state, newUser: data.newUser })
-        // let allUser = data.users;
-        setState({ ...state, users: data.users })
-        // console.log(`socket.off -> allUser`, allUser)
-        if (context.user.id !== data.newUser.id) {
+    /************************************************************
+     * FONCTIONS
+     */
 
-            notify(data.newUser.pseudo);
+    const handleChange = (e) => {
+
+        // console.log(`handleChange -> e`, e.target.value)
+        setState({ ...state, message: e.target.value })
+    }
+
+    const handleClick = () => {
+        // au click j'envoie un évènement message au serveur socket 
+        let newMsg = {
+            id_msg: `${Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1)}_${Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1)}`,
+            content_msg: state.message,
+            date: +new Date
+
         }
 
+        socket.emit("envoi message", newMsg, context.user, socket.room)
+        // console.log(`handleClick -> context.user`, context.user)
+        setState({ ...state, message: "" })
 
-    })
+    }
 
-    function notify(username) {
+    const notify = (username) => {
         toast(`${username} est connecté au salon`)
     }
 
@@ -120,7 +124,10 @@ function Content(props) {
                     <p>C'est plus fun de rejoindre un salon !</p>
                 </div>)
                 : (
-                    <ContentMessage handleChange={handleChange} onClick={handleClick} value={state.message} />
+                    <>
+                        <div className="test">{displayMessages}</div>
+                        < ContentMessage handleChange={handleChange} onClick={handleClick} value={state.message} />
+                    </>
                 )
             }
         </main>

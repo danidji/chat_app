@@ -69,25 +69,25 @@ app.prepare().then(() => {
                         users: allUser
                     });
                     // console.log(`sockets.forEach -> allUser`, allUser)
-
                 })
-                socket.emit('utilisateur en ligne', allUser)
 
             })
 
-            // console.log(`socket.on -> io.in(data.room.id).allSockets()`, io.in(data.room.id).allSockets())
+            let salon;
+            //TODO revoir cette partir, il faut filtré les salons dans dataTab
+            if (!dataTab[data.room.id]) {
+                salon = {
+                    id: data.room.id,
+                    content: {
+                        name: data.room.name,
+                        messages: []
+                    }
+                }
+                dataTab.push(salon);
+            }
 
+            console.log('mes données ===> ', dataTab)
 
-            // enregistrement de la room dans dataTab, si la room n'est pas déjà présente dans le tab
-            // let present = false;
-            // dataTab.forEach(element => {
-            //     if (element.id === data.myRoom.id) {
-            //         present = true;
-            //     }
-            // })
-            // if (!present) {
-            //     dataTab.push(data.myRoom)
-            // }
         })
 
 
@@ -109,34 +109,19 @@ app.prepare().then(() => {
 
         // Ecoute de l'event "envoi message" => transmettre le message à la room
         socket.on("envoi message", (message, user, myRoom) => {
-            // je stocke le message dans dataTab
-            dataTab.forEach(element => {
-                if (element.id === myRoom.id) {
-                    //si j'ai déja enregistré des messages je push à la suite
-                    if (element.messages) {
-                        element.messages.push({
-                            message: message,
-                            from_id: user.id,
-                        })
+            console.log(`socket.on -> myRoom`, myRoom)
+            console.log(`socket.on -> user`, user)
+            console.log(`socket.on -> message`, message)
 
 
-                    } else { // sinon je créé un nouveau tableau
-                        element.messages = new Array({
-                            message: message,
-                            from_id: user.id,
-                        })
-                    }
-
-                }
-                // console.log('messages ===> ', element.messages);
-            })
 
 
-            io.to(myRoom.id).emit("reception message", {
-                message: message,
-                from_id: user.id,
-                from_name: user.pseudo,
-            })
+
+            // io.to(myRoom.id).emit("reception message", {
+            //     message: message,
+            //     from_id: user.id,
+            //     from_name: user.pseudo,
+            // })
             // socket.broadcast.emit("reception message", {
         })
 
