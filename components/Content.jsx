@@ -6,17 +6,24 @@ import { userContext } from '../contexts/userContext';
 import { SocketContext } from '../contexts/socketContext';
 import { CgUserlane } from "react-icons/cg";
 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+import HeaderConvers from './HeaderConvers'
+
 function Content(props) {
 
-    //chargement du contexte usercd 
+    //chargement des contextes 
     const context = useContext(userContext);
     const socket = useContext(SocketContext)
-    console.log(`Content -> socket=====>`, socket.room)
+    // console.log(`Content -> socket=====>`, socket.room)
     // console.log(`Content -> context`, context.myRoom)
 
     const [state, setState] = useState({
         message: "",
-        msgList: []
+        msgList: [],
+        users: [],
+        newUser: {},
     })
 
     let tab = [];
@@ -44,7 +51,9 @@ function Content(props) {
 
 
 
-    //ecoute de serveur web socket
+    /*************************************************************
+     * ECOUTE DES SOCKETS EVENT
+     */
     socket.off("reception message").on("reception message", (message) => {
         // console.log(`socket.on -> message`, message)
 
@@ -63,11 +72,27 @@ function Content(props) {
             context.setConversation(context.myRoom.id, message)
 
         }
+    })
+    socket.off('A rejoint le salon').on('A rejoint le salon', (data) => {
+        // data : {newUser, users:[]}
+
+        // let newUser = data.newUser;
+        setState({ ...state, newUser: data.newUser })
+        // let allUser = data.users;
+        setState({ ...state, users: data.users })
+        // console.log(`socket.off -> allUser`, allUser)
+        if (context.user.id !== data.newUser.id) {
+
+            notify(data.newUser.pseudo);
+        }
 
 
     })
 
-    // console.log('conversation ===>', context.conversation)
+    function notify(username) {
+        toast(`${username} est connecté au salon`)
+    }
+
     const displayMessages = () => {
         return (
             state.msgList.map((element, i) => {
@@ -86,12 +111,9 @@ function Content(props) {
     return (
         <main className={styles.main}>
 
-            <header className={styles.header}>
-                <h4>{context.myRoom !== null && context.myRoom.name}</h4>
-            </header>
-            {/* <div className={styles.content_convers}> Ma conversation</div> */}
-            {displayMessages()}
+            <HeaderConvers allUsers={state.users} newUser={state.newUser} />
 
+            <ToastContainer />
             {context.myRoom === null
                 ? (<div className={styles.info_no_room}>
                     <CgUserlane className={styles.icon} />
