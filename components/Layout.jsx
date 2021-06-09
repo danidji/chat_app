@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import React from 'react';
 import styles from '../styles/Layout.module.css'
 
@@ -12,6 +13,11 @@ function Layout({ content, sidebar }) {
             </div>
         </div >
     )
+}
+
+Layout.propTypes = {
+    content: PropTypes.any,
+    sidebar: PropTypes.any
 }
 
 export default Layout;

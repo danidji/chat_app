@@ -9,7 +9,7 @@ import { GrPowerForceShutdown } from "react-icons/gr";
 import { AiOutlinePoweroff } from "react-icons/ai";
 
 // import clsx from 'clsx';
-
+import PropTypes from 'prop-types';
 import ReactTooltip from 'react-tooltip';
 
 
@@ -131,6 +131,10 @@ function Sidebar(props) {
             </ul>
         </div>
     )
+}
+
+Sidebar.propTypes = {
+    room: PropTypes.array
 }
 
 export default Sidebar;
