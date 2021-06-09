@@ -5,8 +5,8 @@
 
 
 .header {
-    height: 2rem;
-    border-bottom: .01rem solid #4C5454;
+    height: 3rem;
+    border-bottom: .01rem solid #a2b2b2;
 }
 
 .header h4 {
@@ -17,7 +17,9 @@
 .main {
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
     height: 100%;
+    padding-left: 1rem;
 }
 
 .content_convers{
@@ -25,7 +27,7 @@
 }
 
 .content_message {
-    height: 3rem;
+    height: 4rem;
     border-top: .01rem solid #4C5454;
     display: flex;
     align-items: center;
@@ -54,4 +56,17 @@
     font-size: 1.5rem;
     background-color: #4486ff;
     box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+}
+
+.info_no_room {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 15rem;
+}
+
+.icon {
+    font-size: 8rem;
+    color: #a2b2b2;
+    
 }
