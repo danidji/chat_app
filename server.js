@@ -54,6 +54,30 @@ app.prepare().then(() => {
 
             socket.emit("salon rejoint", { roomId: data.room.id });
 
+
+            //Récupération des utilisateur connecté à une room
+            io.in(data.room.id).allSockets().then((sockets) => {
+                // console.log("TEST RETOUR PROMESSE", sockets)
+                let allUser = [];
+                sockets.forEach((socketId) => {
+                    let sock = io.of('/').sockets.get(socketId);
+                    // console.log(`sockets.forEach -> sock`, sock.infoUser)
+                    allUser.push(sock.infoUser);
+
+                    io.to(data.room.id).emit('A rejoint le salon', {
+                        newUser: sock.infoUser,
+                        users: allUser
+                    });
+                    // console.log(`sockets.forEach -> allUser`, allUser)
+
+                })
+                socket.emit('utilisateur en ligne', allUser)
+
+            })
+
+            // console.log(`socket.on -> io.in(data.room.id).allSockets()`, io.in(data.room.id).allSockets())
+
+
             // enregistrement de la room dans dataTab, si la room n'est pas déjà présente dans le tab
             // let present = false;
             // dataTab.forEach(element => {
@@ -73,7 +97,7 @@ app.prepare().then(() => {
             console.log(`socket.on -> data`, data)
             // data : {roomID, user :{id, pseudo, age, description}}
             socket.leave(data.roomId);
-            console.log(`socket.on -> data.roomId`, data.roomId)
+            // console.log(`socket.on -> data.roomId`, data.roomId)
 
             //emission de l'event à l'utilisateur
             socket.emit("salon quitté", data.roomId);
