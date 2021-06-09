@@ -3,17 +3,6 @@
     text-align: center;
 }
 
-
-.header {
-    height: 3rem;
-    border-bottom: .01rem solid #a2b2b2;
-}
-
-.header h4 {
-    margin: 0;
-    padding: 0;
-}
-
 .main {
     display: flex;
     flex-direction: column;
@@ -21,6 +10,46 @@
     height: 100%;
     padding-left: 1rem;
 }
+
+.header {
+    height: 3rem;
+    border-bottom: .01rem solid #a2b2b2;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    position: relative;
+}
+
+.header h4 {
+    margin: 0;
+    padding: 0;
+}
+
+.user_list {
+    font-size: 1.5rem;
+    background-color: rgba(241, 255, 250, 0.1);
+    border: none;
+    outline: 0;
+    
+}
+.user_list:hover {
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+    cursor: pointer;
+}
+
+.user_list_content {
+    position: absolute;
+    top: 3rem;
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+    cursor: pointer;
+    width: 11rem;
+    padding: .5rem;
+    margin: 0;
+}
+.user_list_content li {
+    display: block;
+}
+
 
 .content_convers{
     flex:1;
