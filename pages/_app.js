@@ -6,7 +6,7 @@ import { useState } from 'react';
 function MyApp({ Component, pageProps }) {
   const [state, setState] = useState({
     user: {},
-    myRoom: {},
+    myRoom: null,
     conversation: [],
 
     setUser: (dataUser) => {

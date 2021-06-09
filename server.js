@@ -18,7 +18,7 @@ const io = socketIO(server, {
 const dataTab = [];
 /**
  * dataTab = {
- *      salonId
+ *      salonId,
  *       content : {
  *          nom, 
  *          description,

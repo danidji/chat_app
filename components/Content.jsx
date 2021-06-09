@@ -4,13 +4,14 @@ import styles from '../styles/Conversation.module.css'
 import ContentMessage from './ContentMessage'
 import { userContext } from '../contexts/userContext';
 import { SocketContext } from '../contexts/socketContext';
+import { CgUserlane } from "react-icons/cg";
 
 function Content(props) {
 
     //chargement du contexte usercd 
     const context = useContext(userContext);
     const socket = useContext(SocketContext)
-    // console.log(`Content -> socket=====>`, socket)
+    console.log(`Content -> socket=====>`, socket.room)
     // console.log(`Content -> context`, context.myRoom)
 
     const [state, setState] = useState({
@@ -86,15 +87,20 @@ function Content(props) {
         <main className={styles.main}>
 
             <header className={styles.header}>
-                <h4>{context.myRoom.name}</h4>
+                <h4>{context.myRoom !== null && context.myRoom.name}</h4>
             </header>
-            <div className={styles.content_convers}> Ma conversation</div>
+            {/* <div className={styles.content_convers}> Ma conversation</div> */}
             {displayMessages()}
-            {socket.room &&
 
-                <ContentMessage handleChange={handleChange} onClick={handleClick} value={state.message} />
+            {context.myRoom === null
+                ? (<div className={styles.info_no_room}>
+                    <CgUserlane className={styles.icon} />
+                    <p>C'est plus fun de rejoindre un salon !</p>
+                </div>)
+                : (
+                    <ContentMessage handleChange={handleChange} onClick={handleClick} value={state.message} />
+                )
             }
-
         </main>
     )
 }

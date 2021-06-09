@@ -95,13 +95,14 @@ function Sidebar(props) {
         }
 
         if (state.actualRoom === roomId) {
-            setState({ ...state, actualRoom: "" })
+            setState({ ...state, actualRoom: "" });
+            context.setMyRoom(null)
         }
 
         socket.emit("quitter salon", data)
     }
 
-    console.log(state.actualRoom)
+    // console.log(state.actualRoom)
     const getRoomElement = () => {
         return (
             state.roomData.map((room, i) => {
@@ -115,7 +116,8 @@ function Sidebar(props) {
                             data-tip={state.myRooms.includes(room.id) ? "Quitter salon" : ""}
                             className={`${styles.leave_room} ${state.myRooms.includes(room.id) && styles.room_on}`}
                             onClick={(e) => handleLeaveRoom(e, room.id)}
-                        ><ReactTooltip /><AiOutlinePoweroff />
+                        >
+                            <ReactTooltip /><AiOutlinePoweroff />
                         </button>
                     </li >
                 )
