@@ -30,7 +30,7 @@ function Sidebar(props) {
         setState({ ...state, roomData: props.room });
     }, [])
 
-    /**
+    /*************************************************************
      * ECOUTE DES SOCKETS EVENT
      */
     socket.off("salon rejoint").on("salon rejoint", (roomId) => {
@@ -68,12 +68,10 @@ function Sidebar(props) {
         // structure room : { id , name, description}
         context.setMyRoom(room);
 
+
         // Stockage des données dans le socket
         socket.room = room
         // console.log(`handleClik -> socket`, socket)
-
-        // je réalise une connection au serveur web socket
-
         let data = {
             user: context.user //{id, pseudo, age, description}
             , room: room
@@ -81,6 +79,8 @@ function Sidebar(props) {
         socket.emit('rejoindre salon', data)
         // console.log(`handleClik -> socket`, socket)
         setState({ ...state, actualRoom: room.id });
+
+
 
 
     }
