@@ -37,6 +37,7 @@ app.prepare().then(() => {
     io.on("connection", (socket) => {
         console.log('connecté ! ');
 
+
         socket.on("rejoindre salon", (data) => {
 
             /**    structure donnée ---^
@@ -57,24 +58,23 @@ app.prepare().then(() => {
 
             //Récupération des utilisateur connecté à une room
             io.in(data.room.id).allSockets().then((sockets) => {
-                // console.log("TEST RETOUR PROMESSE", sockets)
+
                 let allUser = [];
                 sockets.forEach((socketId) => {
                     let sock = io.of('/').sockets.get(socketId);
-                    // console.log(`sockets.forEach -> sock`, sock.infoUser)
+
                     allUser.push(sock.infoUser);
 
                     io.to(data.room.id).emit('A rejoint le salon', {
                         newUser: sock.infoUser,
                         users: allUser
                     });
-                    // console.log(`sockets.forEach -> allUser`, allUser)
                 })
 
             })
 
             let salon;
-            //TODO revoir cette partir, il faut filtré les salons dans dataTab
+            //TODO revoir cette partir, il faut filtrer les salons dans dataTab
             if (!dataTab[data.room.id]) {
                 salon = {
                     id: data.room.id,
@@ -97,7 +97,6 @@ app.prepare().then(() => {
             console.log(`socket.on -> data`, data)
             // data : {roomID, user :{id, pseudo, age, description}}
             socket.leave(data.roomId);
-            // console.log(`socket.on -> data.roomId`, data.roomId)
 
             //emission de l'event à l'utilisateur
             socket.emit("salon quitté", data.roomId);
@@ -109,9 +108,9 @@ app.prepare().then(() => {
 
         // Ecoute de l'event "envoi message" => transmettre le message à la room
         socket.on("envoi message", (message, user, myRoom) => {
-            console.log(`socket.on -> myRoom`, myRoom)
-            console.log(`socket.on -> user`, user)
-            console.log(`socket.on -> message`, message)
+            // console.log(`socket.on -> myRoom`, myRoom)
+            // console.log(`socket.on -> user`, user)
+            // console.log(`socket.on -> message`, message)
 
 
 

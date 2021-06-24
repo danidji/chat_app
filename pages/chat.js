@@ -1,7 +1,7 @@
 import Head from 'next/head'
 
 import styles from '../styles/Home.module.css'
-// console.log(`styles`, styles)
+import { useContext } from 'react';
 
 
 import Content from '../components/Content'
@@ -10,7 +10,9 @@ import Sidebar from '../components/Sidebar'
 
 import { fetchData } from '../services/request';
 
+import { userContext } from '../contexts/userContext';
 
+import Register from '../components/Register';
 
 
 export const getServerSideProps = async () => {
@@ -22,16 +24,28 @@ export const getServerSideProps = async () => {
     }
 }
 
+
 export default function Chat(props) {
 
+    //chargement des contextes 
+    const context = useContext(userContext);
 
     return (
         <div className={styles.container}>
 
-
             <Layout content={<Content />} sidebar={<Sidebar room={props.rooms} />} />
+            {/* {context.user.pseudo
+                ? (<Layout content={<Content />} sidebar={<Sidebar room={props.rooms} />} />)
+                : (<Register />)
+            } */}
+
 
 
         </div >
     )
+    // }
+
+
+
+
 }

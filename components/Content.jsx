@@ -39,7 +39,10 @@ function Content(props) {
         setState({ ...state, newUser: data.newUser })
         // let allUser = data.users;
         setState({ ...state, users: data.users })
-        // console.log(`socket.off -> allUser`, allUser)
+
+        console.log('Mon state ===> ', state)
+
+
         if (context.user.id !== data.newUser.id) {
 
             notify(data.newUser.pseudo);
@@ -49,14 +52,11 @@ function Content(props) {
     })
 
     socket.off("reception message").on("reception message", (message) => {
-        // console.log(`socket.on -> message`, message)
 
         let present = false
         tab = state.msgList;
-        // console.log(`socket.on -> tab`, tab)
         tab.forEach(element => {
             if (element.message.id_msg === message.message.id_msg) {
-                // console.log(`message ====>`, message.message.content_msg)
                 present = true;
             }
         })
@@ -74,7 +74,6 @@ function Content(props) {
 
     const handleChange = (e) => {
 
-        // console.log(`handleChange -> e`, e.target.value)
         setState({ ...state, message: e.target.value })
     }
 
@@ -125,7 +124,7 @@ function Content(props) {
                 </div>)
                 : (
                     <>
-                        <div className="test">{displayMessages}</div>
+                        <div className="test">{displayMessages()}</div>
                         < ContentMessage handleChange={handleChange} onClick={handleClick} value={state.message} />
                     </>
                 )

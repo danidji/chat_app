@@ -12,7 +12,7 @@ import { FiUsers } from "react-icons/fi";
 
 
 function HeaderConvers({ allUsers, newUser }) {
-    // console.log(`HeaderConvers -> props`, prsops)
+
     const context = useContext(userContext);
     const [display, setDisplay] = useState(false)
     const handleClick = () => {

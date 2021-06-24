@@ -15,7 +15,7 @@ import ReactTooltip from 'react-tooltip';
 
 
 function Sidebar(props) {
-    // console.log(`Sidebar -> props`, props)
+
     const [state, setState] = useState({
         roomData: [],
         actualRoom: "",
@@ -45,7 +45,7 @@ function Sidebar(props) {
         setState({ ...state, myRooms: socket.rooms });
 
 
-        console.log('STATE ===> ', state);
+        // console.log('STATE ===> ', state);
     })
 
     socket.off("salon quitté").on("salon quitté", (roomId) => {
@@ -58,7 +58,7 @@ function Sidebar(props) {
     })
 
 
-    /**
+    /*******************************************************
      * FONCTIONS 
      */
 
@@ -78,7 +78,6 @@ function Sidebar(props) {
             , room: room
         }
         socket.emit('rejoindre salon', data)
-        // console.log(`handleClik -> socket`, socket)
         setState({ ...state, actualRoom: room.id });
 
         // }
@@ -108,8 +107,10 @@ function Sidebar(props) {
     // console.log(state.actualRoom)
     const getRoomElement = () => {
         return (
+
             state.roomData.map((room, i) => {
                 return (
+
                     <li className={`${styles.room_element} ${state.actualRoom === room.id && styles.active}`} key={i} onClick={() => handleClik(room)}>
                         <div className={styles.infos_room}>
                             <h5 className={styles.info}>{room.name}</h5>
@@ -125,7 +126,6 @@ function Sidebar(props) {
                     </li >
                 )
             })
-
         )
     }
     return (
