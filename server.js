@@ -58,7 +58,7 @@ app.prepare().then(() => {
 
             //Récupération des utilisateurs connecté à une room
             io.in(data.room.id).allSockets().then((sockets) => {
-                console.log(`io.in -> sockets`, sockets)
+                // console.log(`io.in -> sockets`, sockets)
 
                 let allUser = [];
 
@@ -77,7 +77,24 @@ app.prepare().then(() => {
 
             let salon;
             //TODO revoir cette partir, il faut filtrer les salons dans dataTab
-            if (!dataTab[data.room.id]) {
+
+            // clonedeep de dataTab 
+
+            let newDataTab = [...dataTab]
+
+            // console.log('TEST ===>', newDataTab);
+            // console.log('TEST ROOM ID ===>', data.room.id);
+            // console.log('TEST DE LA CONDITION ===>', dataTab[]);
+
+            let test = false;
+
+            newDataTab.forEach((dataRoom) => {
+                // if (!room[data.room.id]) {
+                console.log('YOOOO ===> ', dataRoom[data.room.id])
+                // }
+            })
+            // console.log('TESTTTT ===> ', newDataTab[id]);
+            if (!newDataTab[data.room.id]) {
                 salon = {
                     id: data.room.id,
                     content: {
@@ -96,7 +113,7 @@ app.prepare().then(() => {
 
 
         socket.on("quitter salon", (data) => {
-            console.log(`socket.on -> data`, data)
+            // console.log(`socket.on -> data`, data)
             // data : {roomID, user :{id, pseudo, age, description}}
             socket.leave(data.roomId);
 
@@ -110,9 +127,13 @@ app.prepare().then(() => {
 
         // Ecoute de l'event "envoi message" => transmettre le message à la room
         socket.on("envoi message", (message, user, myRoom) => {
-            // console.log(`socket.on -> myRoom`, myRoom)
-            // console.log(`socket.on -> user`, user)
-            // console.log(`socket.on -> message`, message)
+
+            // cloneDeep de mes données dataTab 
+            let newDataTab = [...dataTab];
+            console.log(`TEST ENVOI MESSAGE ==>`, newDataTab)
+
+
+
 
 
 
