@@ -58,19 +58,21 @@ app.prepare().then(() => {
 
             //Récupération des utilisateurs connecté à une room
             io.in(data.room.id).allSockets().then((sockets) => {
+                console.log(`io.in -> sockets`, sockets)
 
                 let allUser = [];
+
                 sockets.forEach((socketId) => {
                     let sock = io.of('/').sockets.get(socketId);
 
                     allUser.push(sock.infoUser);
 
-                    io.to(data.room.id).emit('A rejoint le salon', {
-                        newUser: sock.infoUser,
-                        users: allUser
-                    });
                 })
 
+                io.to(data.room.id).emit('A rejoint le salon', {
+                    newUser: socket.infoUser,
+                    users: allUser
+                });
             })
 
             let salon;
@@ -86,7 +88,7 @@ app.prepare().then(() => {
                 dataTab.push(salon);
             }
 
-            console.log('mes données ===> ', dataTab)
+            // console.log('mes données ===> ', dataTab)
 
         })
 
