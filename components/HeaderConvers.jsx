@@ -12,13 +12,36 @@ import { FiUsers } from "react-icons/fi";
 
 
 function HeaderConvers({ allUsers, newUser }) {
+    // console.log(`HeaderConvers -> allUsers`, allUsers)
+    // console.log(`HeaderConvers -> newUser`, newUser)
 
     const context = useContext(userContext);
     const [display, setDisplay] = useState(false)
+    const user = context.user;
+
+    //Afficher la liste des utilisateurs
     const handleClick = () => {
-        console.log("user list ==> ", allUsers)
+        // console.log("user list ==> ", allUsers)
         setDisplay((prev) => (!prev))
     }
+
+    // const test = (user) => {
+    //     console.log(`test -> user`, user)
+    //     return user !== newUser
+
+    // }
+
+    // allUsers.forEach(element => {
+    //     if (element.id !== user.id) {
+    //         // console.log(`HeaderConvers -> element.id !== newUser.id`, element.id !== user.id)
+    //         // console.log(`HeaderConvers -> context`, context)
+    //         console.log('USER ===>', element);
+    //     }
+    // });
+
+    // let allUserWithoutUser = allUsers.filter(user => user.id !== newUser.id)
+    // // let allUserWithoutUser = allUsers.filter(test);
+    // console.log(`HeaderConvers -> allUserWithoutUser`, allUserWithoutUser)
 
     return (
         <header className={styles.header}>
@@ -36,7 +59,7 @@ function HeaderConvers({ allUsers, newUser }) {
                             <ReactTooltip /><FiUsers /><span>{allUsers.length}</span>
                         </button>
                         {display &&
-                            < UserList allUsers={allUsers} />
+                            < UserList allUsers={allUsers} newUser={newUser} />
                         }
                     </div>
                 </>

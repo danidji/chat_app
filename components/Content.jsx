@@ -33,14 +33,15 @@ function Content(props) {
      * ECOUTE DES SOCKETS EVENT
      */
     socket.off('A rejoint le salon').on('A rejoint le salon', (data) => {
+        // console.log(`socket.off -> data`, data)
         // data : {newUser, users:[]}
 
         // let newUser = data.newUser;
-        setState({ ...state, newUser: data.newUser })
+        setState(() => ({ ...state, newUser: data.newUser }));
         // let allUser = data.users;
-        setState({ ...state, users: data.users })
+        setState(() => ({ ...state, users: data.users }));
 
-        console.log('Mon state ===> ', state)
+        // console.log('Mon state ===> ', state);
 
 
         if (context.user.id !== data.newUser.id) {
@@ -83,7 +84,6 @@ function Content(props) {
             id_msg: `${Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1)}_${Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1)}`,
             content_msg: state.message,
             date: +new Date
-
         }
 
         socket.emit("envoi message", newMsg, context.user, socket.room)

@@ -1,7 +1,11 @@
 import '../styles/globals.css';
+import React, { useContext } from 'react';
+
 import Head from 'next/head';
 import { userContext } from '../contexts/userContext';
 import { useState } from 'react';
+
+// import { SocketContext } from "../contexts/socketContext";
 
 function MyApp({ Component, pageProps }) {
   const [state, setState] = useState({
@@ -10,6 +14,9 @@ function MyApp({ Component, pageProps }) {
     conversation: [],
 
     setUser: (dataUser) => {
+
+      // const socket = useContext(SocketContext);
+
       setState((state) => ({
         ...state, user: {
           id: `${dataUser.pseudo}_${Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1)}`,
@@ -18,6 +25,7 @@ function MyApp({ Component, pageProps }) {
           description: dataUser.description
         }
       }));
+      // socket.userId = dataUser.id;
     },
     setMyRoom: (roomData) => {
       setState((state) => ({

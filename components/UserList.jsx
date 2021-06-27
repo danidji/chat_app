@@ -1,8 +1,16 @@
 import PropTypes from "prop-types";
-import React from 'react';
-import styles from '../styles/Conversation.module.css'
+import React, { useContext } from 'react';
+import styles from '../styles/Conversation.module.css';
+import { userContext } from '../contexts/userContext';
+
+import { SocketContext } from "../contexts/socketContext";
+
 
 function UserList({ allUsers }) {
+    // console.log(`UserList -> allUsers`, allUsers)
+    const socket = useContext(SocketContext);
+
+    // console.log(`UserList -> socket`, socket)
 
     const displayUser = () => {
         return (

@@ -56,7 +56,7 @@ app.prepare().then(() => {
             socket.emit("salon rejoint", { roomId: data.room.id });
 
 
-            //Récupération des utilisateur connecté à une room
+            //Récupération des utilisateurs connecté à une room
             io.in(data.room.id).allSockets().then((sockets) => {
 
                 let allUser = [];
