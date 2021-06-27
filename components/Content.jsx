@@ -16,8 +16,6 @@ function Content(props) {
     //chargement des contextes 
     const context = useContext(userContext);
     const socket = useContext(SocketContext)
-    // console.log(`Content -> socket=====>`, socket.room)
-    // console.log(`Content -> context`, context.myRoom)
 
     const [state, setState] = useState({
         message: "",
@@ -33,16 +31,12 @@ function Content(props) {
      * ECOUTE DES SOCKETS EVENT
      */
     socket.off('A rejoint le salon').on('A rejoint le salon', (data) => {
-        // console.log(`socket.off -> data`, data)
         // data : {newUser, users:[]}
 
         // let newUser = data.newUser;
         setState(() => ({ ...state, newUser: data.newUser }));
         // let allUser = data.users;
         setState(() => ({ ...state, users: data.users }));
-
-        // console.log('Mon state ===> ', state);
-
 
         if (context.user.id !== data.newUser.id) {
 
@@ -87,7 +81,6 @@ function Content(props) {
         }
 
         socket.emit("envoi message", newMsg, context.user, socket.room)
-        // console.log(`handleClick -> context.user`, context.user)
         setState({ ...state, message: "" })
 
     }
@@ -110,7 +103,6 @@ function Content(props) {
             })
         )
     }
-    // console.log(`socket.on -> tab`, state.msgList)
     return (
         <main className={styles.main}>
 

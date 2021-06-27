@@ -45,7 +45,6 @@ function Sidebar(props) {
         setState({ ...state, myRooms: socket.rooms });
 
 
-        // console.log('STATE ===> ', state);
     })
 
     socket.off("salon quitté").on("salon quitté", (roomId) => {
@@ -104,7 +103,6 @@ function Sidebar(props) {
         socket.emit("quitter salon", data)
     }
 
-    // console.log(state.actualRoom)
     const getRoomElement = () => {
         return (
 

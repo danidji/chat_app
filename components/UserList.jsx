@@ -6,15 +6,11 @@ import { userContext } from '../contexts/userContext';
 import { SocketContext } from "../contexts/socketContext";
 
 
-function UserList({ allUsers }) {
-    // console.log(`UserList -> allUsers`, allUsers)
-    const socket = useContext(SocketContext);
-
-    // console.log(`UserList -> socket`, socket)
+function UserList({ userConnected }) {
 
     const displayUser = () => {
         return (
-            allUsers.map((user, i) => {
+            userConnected.map((user, i) => {
                 return (
                     <li key={i}>{user.pseudo}</li>
                 )
@@ -34,7 +30,7 @@ function UserList({ allUsers }) {
 }
 
 UserList.propTypes = {
-    UserList: PropTypes.array
+    userConnected: PropTypes.array
 }
 
 export default UserList;
