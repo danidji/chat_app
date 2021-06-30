@@ -17,7 +17,8 @@ const io = socketIO(server, {
 
 const dataTab = [];
 /**
- * dataTab = {
+ * Données composants datatab
+ * data = {
  *      salonId,
  *       content : {
  *          nom, 
@@ -76,25 +77,10 @@ app.prepare().then(() => {
             })
 
             let salon;
-            //TODO revoir cette partir, il faut filtrer les salons dans dataTab
+            // Si un salon est rejoint pour la premier fois, il sera stocké dans dataTab 
 
-            // clonedeep de dataTab 
-
-            let newDataTab = [...dataTab]
-
-            // console.log('TEST ===>', newDataTab);
-            // console.log('TEST ROOM ID ===>', data.room.id);
-            // console.log('TEST DE LA CONDITION ===>', dataTab[]);
-
-            let test = false;
-
-            newDataTab.forEach((dataRoom) => {
-                // if (!room[data.room.id]) {
-                console.log('YOOOO ===> ', dataRoom[data.room.id])
-                // }
-            })
-            // console.log('TESTTTT ===> ', newDataTab[id]);
-            if (!newDataTab[data.room.id]) {
+            if (dataTab.find(element => element.id === data.room.id) === undefined) {
+                console.log('CEST OK MEC ==> ', dataTab)
                 salon = {
                     id: data.room.id,
                     content: {
@@ -104,9 +90,6 @@ app.prepare().then(() => {
                 }
                 dataTab.push(salon);
             }
-
-            // console.log('mes données ===> ', dataTab)
-
         })
 
 
