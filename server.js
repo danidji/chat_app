@@ -59,7 +59,6 @@ app.prepare().then(() => {
 
             //Récupération des utilisateurs connecté à une room
             io.in(data.room.id).allSockets().then((sockets) => {
-                // console.log(`io.in -> sockets`, sockets)
 
                 let allUser = [];
 
@@ -80,7 +79,6 @@ app.prepare().then(() => {
             // Si un salon est rejoint pour la premier fois, il sera stocké dans dataTab 
 
             if (dataTab.find(element => element.id === data.room.id) === undefined) {
-                console.log('CEST OK MEC ==> ', dataTab)
                 salon = {
                     id: data.room.id,
                     content: {
@@ -93,15 +91,13 @@ app.prepare().then(() => {
         })
 
 
-
-
         socket.on("quitter salon", (data) => {
-            // console.log(`socket.on -> data`, data)
             // data : {roomID, user :{id, pseudo, age, description}}
             socket.leave(data.roomId);
 
             //emission de l'event à l'utilisateur
             socket.emit("salon quitté", data.roomId);
+
             //emission de l'event à tous les autres utilisateurs
             socket.broadcast.to(data.roomId).emit("quitte la conversation", data.user);
 
@@ -112,15 +108,24 @@ app.prepare().then(() => {
         socket.on("envoi message", (message, user, myRoom) => {
 
             // cloneDeep de mes données dataTab 
-            let newDataTab = [...dataTab];
-            console.log(`TEST ENVOI MESSAGE ==>`, newDataTab)
+            // let newDataTab = [...dataTab];
 
 
+            // Création d'un objet nouveau msg => { id_msg, content_msg, date, from : user{}}
+            let newMessage = { ...message };
+            newMessage.from = user;
 
 
+            // Copie du nouveau msg dans l'historique des msg de la room 
+            dataTab.forEach(element => {
+                if (element.id === myRoom.id) {
+                    element.content.messages.push(newMessage);
+                }
+            })
 
+            //TODO = > Emmettre l'event "reception message" avec le nouveau message
 
-
+            // console.log(`socket.on -> myRoomData`, myRoomData.content)
 
             // io.to(myRoom.id).emit("reception message", {
             //     message: message,
