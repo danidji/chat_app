@@ -19,9 +19,8 @@ export default function Register(props) {
 
 
     const onSubmit = (data) => {
-        // console.log(data);
         context.setUser(data);
-        router.push("/chat");
+        // router.push("/chat");
     }
 
 

@@ -34,12 +34,6 @@ export default function Chat(props) {
         <div className={styles.container}>
 
             <Layout content={<Content />} sidebar={<Sidebar room={props.rooms} />} />
-            {/* {context.user.pseudo
-                ? (<Layout content={<Content />} sidebar={<Sidebar room={props.rooms} />} />)
-                : (<Register />)
-            } */}
-
-
 
         </div >
     )
