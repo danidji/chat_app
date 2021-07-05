@@ -1,21 +1,27 @@
 import React, { useContext, useState } from 'react';
 import styles from '../styles/Conversation.module.css'
 
-import ContentMessage from './ContentMessage'
-import { userContext } from '../contexts/userContext';
-import { SocketContext } from '../contexts/socketContext';
-import { CgUserlane } from "react-icons/cg";
 
+import { CgUserlane } from "react-icons/cg";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import clsx from 'clsx';
 
 import HeaderConvers from './HeaderConvers'
+import ContentMessage from './ContentMessage'
+
+import { SocketContext } from '../contexts/socketContext';
+import { userContext } from '../contexts/userContext';
+import { getFormatDate } from '../services/utiles';
+
+
 
 function Content(props) {
 
     //chargement des contextes 
     const context = useContext(userContext);
-    const socket = useContext(SocketContext)
+    const socket = useContext(SocketContext);
+    let user = context.user;
 
     const [state, setState] = useState({
         message: "",
@@ -38,7 +44,7 @@ function Content(props) {
         // let allUser = data.users;
         setState(() => ({ ...state, users: data.users }));
 
-        if (context.user.id !== data.newUser.id) {
+        if (user.id !== data.newUser.id) {
 
             notify(data.newUser.pseudo);
         }
@@ -47,20 +53,18 @@ function Content(props) {
     })
 
     socket.off("reception message").on("reception message", (message) => {
+        // console.log(`socket.off -> message`, message)
 
-        let present = false
-        tab = state.msgList;
-        tab.forEach(element => {
-            if (element.message.id_msg === message.message.id_msg) {
-                present = true;
-            }
-        })
-        if (!present) {
-            tab.push(message);
-            setState({ ...state, msgList: tab });
-            context.setConversation(context.myRoom.id, message)
+        let messages = [...state.msgList];
 
-        }
+        messages.push(message)
+        setState({ ...state, msgList: messages })
+
+
+
+        // console.log('MES MESSAGES ==> ', state.msgList);
+
+
     })
 
     /************************************************************
@@ -80,7 +84,7 @@ function Content(props) {
             date: +new Date
         }
 
-        socket.emit("envoi message", newMsg, context.user, socket.room)
+        socket.emit("envoi message", newMsg, user, socket.room)
         setState({ ...state, message: "" })
 
     }
@@ -89,20 +93,31 @@ function Content(props) {
         toast(`${username} est connecté au salon`)
     }
 
+    // Génère l'affichage des messages
     const displayMessages = () => {
         return (
-            state.msgList.map((element, i) => {
+            <div className={styles.content_conversation}>
+                {state.msgList.map((element, i) => {
 
-                return (
-                    <div key={i}>
+                    const format = getFormatDate(element.date);
 
-                        <div className="test"> {element.from_id}</div>
-                        <div className="test" key={i}>{element.message.content_msg} </div>
-                    </div>
-                )
-            })
+                    // console.log(`MON OBJET DATE ==>`, getFormatDate(element.date))
+
+
+                    return (
+                        <div className={clsx('message', element.from.id === user.id ? styles.msg_right : styles.msg_left)} key={i}>
+                            <div className="msg_from"> {element.from.id === user.id ? 'moi' : element.from.pseudo}</div>
+                            <div className="msg_text">{element.content_msg} </div>
+                            <div className="msg_date">{format.heure} </div>
+
+                        </div>
+                    )
+                })}
+            </div>
         )
     }
+
+
     return (
         <main className={styles.main}>
 
@@ -116,7 +131,7 @@ function Content(props) {
                 </div>)
                 : (
                     <>
-                        <div className="test">{displayMessages()}</div>
+                        {displayMessages()}
                         < ContentMessage handleChange={handleChange} onClick={handleClick} value={state.message} />
                     </>
                 )
