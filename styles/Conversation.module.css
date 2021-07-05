@@ -1,6 +1,7 @@
 .content {
     /* background-color: blue; */
     text-align: center;
+    
 }
 
 .main {
@@ -8,7 +9,9 @@
     flex-direction: column;
     justify-content: space-between;
     height: 100%;
-    padding-left: 1rem;
+    /* padding-left: 1rem; */
+    background-color: #ddecff;
+    border-radius:0 .5rem.5rem 0;
 }
 
 .header {
@@ -45,6 +48,7 @@
     width: 11rem;
     padding: .5rem;
     margin: 0;
+    background-color: #fff;
 }
 .user_list_content li {
     display: block;
@@ -98,4 +102,27 @@
     font-size: 8rem;
     color: #a2b2b2;
     
+}
+
+.content_conversation {
+    display: flex;
+    flex-direction: column;
+    /* margin-right: 1rem; */
+    /* margin: 1rem 1rem 1rem 0; */
+    margin: 1rem;
+    padding: 1rem;
+    border-radius: 1rem;
+    background-color: #F1FFFA;
+    /* border: .2rem solid #4C5454; */
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+}
+
+.msg_right {
+    align-self: flex-end;
+}
+.msg_left {
+    align-self: flex-start;
+}
+.content_conversation {
+    height: 100%;
 }

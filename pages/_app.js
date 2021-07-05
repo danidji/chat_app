@@ -1,4 +1,5 @@
 import '../styles/globals.css';
+import '../styles/styles.css'
 import React, { useContext } from 'react';
 
 import Head from 'next/head';
