@@ -111,7 +111,10 @@ app.prepare().then(() => {
             // let newDataTab = [...dataTab];
 
 
-            // Création d'un objet nouveau msg => { id_msg, content_msg, date, from : user{}}
+            // Création d'un objet nouveau msg 
+            // => { id_msg, content_msg, date, from : user{}}
+
+
             let newMessage = { ...message };
             newMessage.from = user;
 
@@ -123,24 +126,18 @@ app.prepare().then(() => {
                 }
             })
 
-            //TODO = > Emmettre l'event "reception message" avec le nouveau message
 
-            // console.log(`socket.on -> myRoomData`, myRoomData.content)
+            io.to(myRoom.id).emit("reception message", newMessage)
+            // socket.broadcast.emit("reception message", newMessage)
 
-            // io.to(myRoom.id).emit("reception message", {
-            //     message: message,
-            //     from_id: user.id,
-            //     from_name: user.pseudo,
-            // })
-            // socket.broadcast.emit("reception message", {
+
+
+            socket.on("disconnect", () => {
+                console.log('Utilisateur déconnecté!');
+            })
         })
 
 
-
-        socket.on("disconnect", () => {
-            console.log('Utilisateur déconnecté!');
-        })
     })
-
 
 })
