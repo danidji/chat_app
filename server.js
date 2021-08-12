@@ -103,6 +103,15 @@ app.prepare().then(() => {
 
         })
 
+        socket.on("récupération room", ({ salonID }) => {
+            console.log(salonID)
+            // console.log("DataTab => ", dataTab);
+
+            const roomInformation = dataTab.find((element) => element.id === salonID)
+            console.log('Info Room => ', roomInformation);
+
+        })
+
 
         // Ecoute de l'event "envoi message" => transmettre le message à la room
         socket.on("envoi message", (message, user, myRoom) => {

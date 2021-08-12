@@ -79,6 +79,8 @@ function Sidebar(props) {
         socket.emit('rejoindre salon', data)
         setState({ ...state, actualRoom: room.id });
 
+        socket.emit('récupération room', { salonID: room.id })
+
         // }
 
 
@@ -87,7 +89,6 @@ function Sidebar(props) {
     }
 
     const handleLeaveRoom = (e, roomId) => {
-        console.log(`handleLeaveRoom -> roomId`, roomId)
         e.stopPropagation();
 
         let data = {
