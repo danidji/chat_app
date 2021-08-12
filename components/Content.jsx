@@ -53,17 +53,11 @@ function Content(props) {
     })
 
     socket.off("reception message").on("reception message", (message) => {
-        // console.log(`socket.off -> message`, message)
 
         let messages = [...state.msgList];
 
         messages.push(message)
         setState({ ...state, msgList: messages })
-
-
-
-        // console.log('MES MESSAGES ==> ', state.msgList);
-
 
     })
 
